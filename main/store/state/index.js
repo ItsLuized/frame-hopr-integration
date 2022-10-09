@@ -7,7 +7,7 @@ const latestStateVersion = () => {
   const state = persist.get('main')
   if (!state || !state.__) {
     // log.info('Persisted state: returning base state')
-    return state 
+    return state
   }
 
   // valid states are less than or equal to the latest migration we know about 
@@ -246,42 +246,56 @@ const initial = {
         },
         1: {
           alchemy: ['wss://eth-mainnet.ws.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0', 'https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0'],
-          infura: 'infura'
+          infura: 'infura',
+          hopr: 'http://localhost:9001/?exit-provider=https://eth-mainnet.alchemyapi.io/v2/NBms1eV9i16RFHpFqQxod56OLdlucIq0'
         },
         3: {
-          infura: 'infuraRopsten'
+          infura: 'infuraRopsten',
+          hopr: 'http://localhost:9001/?exit-provider=infuraRopsten'
         },
         4: {
-          infura: 'infuraRinkeby'
+          infura: 'infuraRinkeby',
+
         },
         5: {
           infura: ['wss://goerli.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b', 'https://goerli.infura.io/ws/v3/786ade30f36244469480aa5c2bf0743b'],
           mudit: 'https://rpc.goerli.mudit.blog',
           slockit: 'https://rpc.slock.it/goerli',
-          prylabs: 'https://goerli.prylabs.net'
+          prylabs: 'https://goerli.prylabs.net',
+          hopr: 'http://localhost:9001/?exit-provider=https://eth-goerli.alchemyapi.io/v2/_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC'
         },
         10: {
           optimism: 'https://mainnet.optimism.io',
-          infura: 'https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
+          infura: 'https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b',
+          hopr: 'http://localhost:9001/?exit-provider=https://optimism-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
         },
         42: {
-          infura: 'infuraKovan'
+          infura: 'infuraKovan',
+          hopr: 'http://localhost:9001/?exit-provider=infuraKovan'
         },
         74: {
-          idchain: 'wss://idchain.one/ws/'
+          idchain: 'wss://idchain.one/ws/',
+          hopr: 'http://localhost:9001/?exit-provider=wss://idchain.one/ws/'
         },
         100: {
-          poa: 'https://dai.poa.network'
+          poa: 'https://dai.poa.network',
+          hopr: 'http://localhost:9001/?exit-provider=https://dai.poa.network'
         },
         137: {
-          infura: 'https://polygon-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
+          infura: 'https://polygon-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b',
+          hopr: 'http://localhost:9001/?exit-provider=https://polygon-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
         },
         42161: {
-          infura: 'https://arbitrum-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
+          infura: 'https://arbitrum-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b',
+          hopr: 'http://localhost:9001/?exit-provider=https://arbitrum-mainnet.infura.io/v3/786ade30f36244469480aa5c2bf0743b'
+        },
+        11155111: {
+          infura: "https://rpc2.sepolia.org",
+          hopr: "http://localhost:9001/?exit-provider=https://rpc2.sepolia.org"
         }
       }
     },
-    networks: main('networks', { 
+    networks: main('networks', {
       ethereum: {
         1: {
           id: 1,
@@ -470,6 +484,25 @@ const initial = {
             secondary: { on: false, current: 'custom', status: 'loading', connected: false, type: '', network: '', custom: '' }
           },
           on: false
+        },
+        11155111: {
+          id: 11155111,
+          type: 'ethereum',
+          layer: 'testnet',
+          symbol: 'SEP',
+          name: 'Sepolia',
+          explorer: 'https://sepolia.etherscan.io/',
+          gas: {
+            price: {
+              selected: 'standard',
+              levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
+            }
+          },
+          connection: {
+            primary: { on: true, current: 'hopr', status: 'loading', connected: false, type: '', network: '', custom: '' },
+            secondary: { on: false, current: 'custom', status: 'loading', connected: false, type: '', network: '', custom: '' }
+          },
+          on: false
         }
       }
     }),
@@ -555,7 +588,16 @@ const initial = {
               levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
             }
           }
-        }
+        },
+        11155111: {
+          gas: {
+            fees: {},
+            price: {
+              selected: 'standard',
+              levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
+            }
+          }
+        },
       }
     }),
     ipfs: {},

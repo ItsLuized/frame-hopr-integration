@@ -17,7 +17,7 @@ import Dropdown from '../Components/Dropdown'
 
 class Panel extends React.Component {
 
-  indicator (connection) {
+  indicator(connection) {
     const status = [connection.primary.status, connection.secondary.status]
     if (status.indexOf('connected') > -1) {
       if (this.store('selected.current')) {
@@ -29,7 +29,7 @@ class Panel extends React.Component {
       return <div className='panelDetailIndicatorInner panelDetailIndicatorBad' />
     }
   }
-  
+
   // componentDidMount () {
   //   console.log('did mount')
   //   document.addEventListener('keydown', (event) => {
@@ -48,29 +48,29 @@ class Panel extends React.Component {
   //   })
   // }
 
-  selectNetwork (network) {
+  selectNetwork(network) {
     const [type, id] = network.split(':')
     if (network.type !== type || network.id !== id) link.send('tray:action', 'selectNetwork', type, id)
   }
-  
-  hexToDisplayGwei (weiHex) {
+
+  hexToDisplayGwei(weiHex) {
     return parseInt(weiHex, 'hex') / 1e9 < 1 ? '‹1' : Math.round(parseInt(weiHex, 'hex') / 1e9)
   }
-  
-  render () {
+
+  render() {
     const opacity = this.store('tray.initial') ? 0 : 1 // open ? 'translate3d(0px, 0px, 0px)' : 'translate3d(370px, 0px, 0px)'
     const { type, id } = this.store('main.currentNetwork')
 
     const nativeCurrency = this.store('main.networksMeta', type, id, 'nativeCurrency')
 
     const chainLayer = this.store('main.networks', type, id, 'layer')
-    const baseRate = chainLayer === 'testnet' ? 'TEST' : 
+    const baseRate = chainLayer === 'testnet' ? 'TEST' :
       nativeCurrency && nativeCurrency.usd ? (
-        nativeCurrency.usd.price < 100 ? 
+        nativeCurrency.usd.price < 100 ?
           (Math.round(nativeCurrency.usd.price * 100) / 100).toFixed(2)
-        :
+          :
           Math.floor(nativeCurrency.usd.price).toLocaleString()
-    ) : '---'
+      ) : '---'
 
     let gasPrice = this.store('main.networksMeta', type, id, 'gas.price.levels.fast')
     if (!gasPrice) gasPrice = this.store('main.networksMeta', type, id, 'gas.price.fees.maxFeePerGas')
@@ -82,8 +82,8 @@ class Panel extends React.Component {
         const net = networks[type][id]
         const status = [net.connection.primary.status, net.connection.secondary.status]
         if (net.on) {
-          networkOptions.push({ 
-            text: net.name, 
+          networkOptions.push({
+            text: net.name,
             value: type + ':' + id,
             indicator: net.on && status.indexOf('connected') > -1 ? 'good' : 'bad'
           })
